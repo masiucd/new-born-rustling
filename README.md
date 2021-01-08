@@ -19,3 +19,11 @@ Rust is a system level programing language, but it is so much more thane that. M
 Javascript developers will use Rust and web assembly without even knowing it, if you don't want of course, for example front end frameworks like `React` or `Svelte` could be even more optimized with `Rust` and thats is what I mean that you will probably use it without even knowing it. The thing you will make notice of is how much faster and precise everything would be.
 
 This Repo is for you as a `JS` developer to learn the fundamentals in `Rust` and how it could help you to become a much better `Javascript` developer
+
+## Control Flow(#cf)
+
+## Enums(#enums)
+
+## Structs(#structs)
+
+## Methods(#methods)

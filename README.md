@@ -4,6 +4,7 @@
 
 - [About](#about)
 - [Content](#content)
+  - [Statement vs Expression](#s-vs-e)
   - [Control Flow](#cf)
   - [Enums](#enums)
   - [Structs](#structs)
@@ -20,10 +21,45 @@ Javascript developers will use Rust and web assembly without even knowing it, if
 
 This Repo is for you as a `JS` developer to learn the fundamentals in `Rust` and how it could help you to become a much better `Javascript` developer
 
-## Control Flow(#cf)
+## StateMent vs Expression <a name ="s-vs-e"></a>
 
-## Enums(#enums)
+To know statement vs expression is important specially in `rust` when to add
+semicolon or not. A statement is something that we currently do in part of code
+without returning for example.
 
-## Structs(#structs)
+```rust
+ if a > 10 {
+   println!("foo");
+ }else{
+   println!("bar");
+ }
+```
 
-## Methods(#methods)
+as you see wee add semicolon after the `println!` function do declare that this
+is a statement and not a expression.
+
+To show ho a expression would look like we could been writing it like this.
+
+```rust
+  fn double(x:u8) -> u:8 {
+    // also a expression here
+    x * 2
+  }
+  let a:u8 = 20;
+
+  if a > 10 {
+    double(a)
+  }else{
+  // else just return a
+   a
+  }
+
+```
+
+## Control Flow <a name ="cf"></a>
+
+## Enums <a name ="enums"></a>
+
+## Structs <a name ="structs"></a>
+
+## Methods <a name ="methods"></a>

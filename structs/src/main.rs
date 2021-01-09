@@ -1,3 +1,6 @@
+#[path = "./math/math.rs"]
+mod math;
+use math::math::arithmetic;
 #[derive(Debug)]
 enum FootBallPlayerPosition {
     GaolKeeper,
@@ -42,4 +45,7 @@ fn main() {
     );
 
     println!("{:?}", triangele);
+
+    let twenty_two = arithmetic::add(10, 12);
+    println!("calculating through a module {}", twenty_two);
 }

@@ -1,9 +1,35 @@
 use std::io;
 
+fn double(x: u8) -> u8 {
+    x * 2
+}
+
+#[derive(Debug)]
+enum Player {
+    A,
+    B,
+    C,
+}
+
+fn check_player(player: Player) -> String {
+    match player {
+        Player::A => "player A".to_string(),
+        Player::B => "player B".to_string(),
+        Player::C => "player C".to_string(),
+    }
+}
+
 fn main() {
-    discount(10);
-    let r = foo(30);
-    println!("{}", r);
+    let x = 30;
+
+    let res = if x > 20 { double(x) } else { x };
+
+    println!("res is {}", res);
+    let cp = check_player(Player::B);
+    println!("{}", cp);
+    // discount(10);
+    // let r = foo(30);
+    // println!("{}", r);
     // who_is_the_master()
     // who_is_the_master2()
 }

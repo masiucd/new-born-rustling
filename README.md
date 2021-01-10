@@ -21,7 +21,7 @@ Javascript developers will use Rust and web assembly without even knowing it, if
 
 This Repo is for you as a `JS` developer to learn the fundamentals in `Rust` and how it could help you to become a much better `Javascript` developer
 
-## StateMent vs Expression <a name ="s-vs-e"></a>
+## Statement vs Expression <a name ="s-vs-e"></a>
 
 To know statement vs expression is important specially in `rust` when to add
 semicolon or not. A statement is something that we currently do in part of code

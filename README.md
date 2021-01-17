@@ -10,7 +10,8 @@
   - [Enums <a name ="enums"></a>](#enums-)
   - [Structs <a name ="structs"></a>](#structs-)
   - [Methods <a name ="methods"></a>](#methods-)
-  - [Borrowing <a name ="borrowing></a>](#borrowing-a-name-borrowinga)
+  - [Borrowing <a name ="borrowing"></a>](#borrowing-)
+  - [Slices <a name ="slices"></a>](#slices-)
 
 ## About <a name = "about"></a>
 
@@ -80,9 +81,9 @@ Borrowing in `Rust` helps us to barrow a the data for a short amount of time, fo
 }
 
 impl User {
-    fn greet(&self) {
-        println!(
-            "Hello my name is {} and I am {} years old",
+  fn greet(&self) {
+    println!(
+      "Hello my name is {} and I am {} years old",
             self.username, self.age
         );
     }
@@ -90,7 +91,7 @@ impl User {
 
   fn main() {
     let  linda = User::new(User {
-        username: String::from("Linda"),
+      username: String::from("Linda"),
         email: String::from("linda@io.com"),
         cool: true,
         age: 32,
@@ -106,18 +107,18 @@ Even if your friend is using your car it is still your car and your responsibili
 
 ```rust
 enum AnimalType {
-    Dog,
+  Dog,
     Cat,
 }
 
 struct Animal {
-    name: String,
+  name: String,
     animalType: AnimalType,
 }
 
 // Barrow the animal by making a reference
 fn greet(animal: &Animal) {
-    println!("hello there {} ", animal.name);
+  println!("hello there {} ", animal.name);
 }
 
 fn main() {
@@ -140,3 +141,40 @@ With help of borrowing a value we gain performance. Instead of make a copy of a 
 
 - What is borrowing? lend out a value instead of transferring ownership
 - Why borrow? reduce allocations, improve performance
+
+## Slices <a name ="slices"></a>
+
+Slices is a datatype in `Rust` that has to do with borrowing different values.
+**So what is a slice?**
+A slice is a data type that always borrow data owned by some other data structure, like for example a `String`, or `u8`.
+A slice contains a pointer and a length, The pointer is a reference to the start of the data that the slice contains, and the length is the amount of elements after the start that the slice contains.
+
+How to store a slice in `Rust`.
+We create a slice using an ampersand, the variable we're using/referencing, and square brackets containing a range.
+
+```rust
+fn main() {
+    let name = "marcell";
+    let name_slice = &name[0..3];
+    let cell = &name[3..];
+    let barrow_all_data = &name[..];
+    println!(
+        "name_slice is {} and the length is {:?} ",
+        name_slice,
+        name_slice.chars().count()
+    );
+    // name_slice is mar and the length is 3
+    println!("{}", cell); // cell
+    println!("{}", barrow_all_data); // marcell
+}
+
+```
+
+We can even use slices from a `vector` ore an `array`. The difference between a vector and a arrray is that an vector can grow in size similar like a array in `JS` and a array in `Rust` has a fixed length.
+
+rust will panic if we try to create a slice which is greater then the length of the data structure itself.
+
+```rust
+  let xs = vec![1,2,3];
+  let xsSlice = &xs[0..99]; // Panic ! Not alllowed
+```

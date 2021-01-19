@@ -31,12 +31,23 @@ impl User {
             password: user.password,
         }
     }
-    fn birthday(&self) {
+    fn birthday(&mut self) {
         // &self.age + 1;
         // &self.age + 10
         // &self.age = &self.age + 1;
-        println!("{}", &self.age + 1);
+        self.age + 1;
     }
+}
+
+fn first_word(word: &String) -> &str {
+    // convert string to a slice of bytes
+    let bytes = word.as_bytes();
+    for (i, &byte) in bytes.iter().enumerate() {
+        if byte == b' ' {
+            return &word[0..i];
+        }
+    }
+    &word[..]
 }
 
 fn what_fruit(f: Fruit) {
@@ -79,6 +90,10 @@ fn main() {
     println!("bobby {:?}", bobby);
     // bobby.greet();
     linda.greet();
-    &linda.birthday();
-    &linda.greet();
+    linda.birthday();
+    linda.greet();
+
+    let word = String::from("legia warszawa cwks");
+    let first = first_word(&word);
+    println!("{}", first);
 }

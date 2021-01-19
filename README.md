@@ -12,6 +12,7 @@
   - [Methods <a name ="methods"></a>](#methods-)
   - [Borrowing <a name ="borrowing"></a>](#borrowing-)
   - [Slices <a name ="slices"></a>](#slices-)
+  - [Self <a href = "self"></a>](#self-)
 
 ## About <a name = "about"></a>
 
@@ -177,4 +178,30 @@ rust will panic if we try to create a slice which is greater then the length of 
 ```rust
   let xs = vec![1,2,3];
   let xsSlice = &xs[0..99]; // Panic ! Not alllowed
+```
+
+## Self <a href = "self"></a>
+
+When using the `self` keyword `Rust` creates the reference automatically, and it know when we want to make a mutable reference as well.
+For example, a user struct where we implement a `birthday` method, this is a good usecase when we want to mute the users age.
+
+```rust
+  struct User {
+    name: String,
+    age: u8,
+  }
+
+  impl User {
+    birthday(&mut self){
+        self.age +=1;
+    }
+  }
+
+  fn main(){
+
+    let mut marcell = User{ name: String::from("Marcell"), age: 24 };
+    marcell.birthday();
+    // {name: Marcell, age: 25}
+  }
+
 ```

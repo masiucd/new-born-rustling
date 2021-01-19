@@ -18,6 +18,14 @@ fn reverse_str2(s: &str) -> String {
     rev_str
 }
 
+fn string_to_list(string: &String) -> Vec<char> {
+    let xs = string.chars().collect::<Vec<char>>();
+    for ch in &xs {
+        println!("char is {}", ch);
+    }
+    xs
+}
+
 fn main() {
     let a = [1, 2, 3, 4, 5];
     iterate_through_list(&a);
@@ -29,6 +37,12 @@ fn main() {
 
     let names = vec!["bob", "mike", "greg"];
     match_name(names);
+
+    let hello_world = String::from("Hello world");
+
+    let xs = string_to_list(&hello_world);
+
+    println!("xs is {:?} ", xs);
 }
 
 fn match_name(names: Vec<&str>) {

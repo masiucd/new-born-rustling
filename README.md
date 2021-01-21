@@ -13,6 +13,7 @@
   - [Borrowing <a name ="borrowing"></a>](#borrowing-)
   - [Slices <a name ="slices"></a>](#slices-)
   - [Self <a href = "self"></a>](#self-)
+  - [Ownership <a name ="ownership"></a>](#ownership-)
 
 ## About <a name = "about"></a>
 
@@ -103,10 +104,10 @@ impl User {
 ```
 
 Borrowing a value may feel similar to pointers if you been working with `C` ore other languages that using pointers.Borrowing is a way to use some code for a time without taking the ownership.
-Like somone want's to borrow your car for a while.
+Like someone want's to borrow your car for a while.
 Even if your friend is using your car it is still your car and your responsibility to pay the taxes and stuff, in this case when it come to `rust` clean up after you.
 
-```rust
+````rust
 enum AnimalType {
   Dog,
     Cat,
@@ -133,9 +134,34 @@ fn main() {
         "I can still us dog here: {}, because we just barrowed the dog when passing goh to greet",
         dog.name
     );
+## Ownership <a name ="ownership"></a>
+
+Rust does not have any garbage collector like languages like `javascript`, `java` ore `golang`. To really understand `rust` we will go through how clearing up memory works in `rust` and how ownership works.
+Ownership in `rust` is a strategy for the rust compiler to managing data in memory and preventing common problems.
+Every chunk of memory must have one value that is the owner of the memory.
+The owner responsibility it to clean up data en free up space(memory).
+This happens when the owners variable go out of scope.
+We can also decide if the dta should be mutable or not with the `mut` keyword.
+
+Imagine that you inviting your friends for a nice dinner at home. You are responsible for cooking and serving the food, everyone can share and eat the food but you have to clean up and make the dishes when everyone leaves.
+
+Same as for the owner of the variable, we can barrow the data for a bit and then give it back to the owner, for example making a reference to a function parameter.
+
+for example:
+
+```rust
+fn say_hi(str: String) {
+    println!("hello {} ", str);
 }
 
-```
+fn main() {
+    let a = String::from("legia");
+    say_hi(a);
+    // Will give us a error
+    println!("{}", a);
+}
+
+````
 
 **Why do we borrowing?**
 With help of borrowing a value we gain performance. Instead of make a copy of a value and pass it to the function to create a new spot in memory, we can simply borrow the value and then give it back when we are finished.
@@ -183,9 +209,9 @@ rust will panic if we try to create a slice which is greater then the length of 
 ## Self <a href = "self"></a>
 
 When using the `self` keyword `Rust` creates the reference automatically, and it know when we want to make a mutable reference as well.
-For example, a user struct where we implement a `birthday` method, this is a good usecase when we want to mute the users age.
+For example, a user struct where we implement a `birthday` method, this is a good use case when we want to mute the users age.
 
-```rust
+````rust
   struct User {
     name: String,
     age: u8,
@@ -203,5 +229,33 @@ For example, a user struct where we implement a `birthday` method, this is a goo
     marcell.birthday();
     // {name: Marcell, age: 25}
   }
+This happens because as soon be use `a` as a parameter in `say_hi` function, the `str` argument will take the ownership over a and we will no longer have access to a.
+
+The compiler will help us:
+
+```rust
+error[E0382]: borrow of moved value: `a`
+ --> src/main.rs:8:20
+  |
+6 |     let a = String::from("legia");
+  |         - move occurs because `a` has type `String`, which does not implement the `Copy` trait
+7 |     say_hi(a);
+  |            - value moved here
+8 |     println!("{}", a);
+  |                    ^ value borrowed here after move
+````
+
+To make it work we could borrow the string instead by making a reference.
+
+```rust
+fn say_hi(str: &String) {
+    println!("hello {} ", str);
+}
+
+fn main() {
+    let a = String::from("legia");
+    say_hi(&a);
+    println!("{}", a);
+}
 
 ```

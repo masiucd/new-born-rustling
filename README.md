@@ -11,6 +11,7 @@
   - [Structs <a name ="structs"></a>](#structs-)
   - [Methods <a name ="methods"></a>](#methods-)
   - [Borrowing <a name ="borrowing"></a>](#borrowing-)
+  - [Borrowing patterns <a name ="borrowing-patterns"></a>](#borrowing-patterns-)
   - [Slices <a name ="slices"></a>](#slices-)
   - [Self <a href = "self"></a>](#self-)
   - [Ownership <a name ="ownership"></a>](#ownership-)
@@ -366,6 +367,128 @@ With help of borrowing a value we gain performance. Instead of make a copy of a 
 
 - What is borrowing? lend out a value instead of transferring ownership
 - Why borrow? reduce allocations, improve performance
+
+## Borrowing Patterns <a name = "#borrowing-patterns"> </a>
+
+How does the compiler works when follow different patterns in rust?
+Borrowing patterns in rust is great to know to have much better understanding how the complier works, and to learn to work with the complier and not against it.
+
+`At the same time`, what does this actually mean?
+Most when you here somone says `Borrow at the same time` they mean they are the same lexical scope created by curly brackets.
+
+```
+At the same time = in the same scope
+```
+
+```rust
+fn main() {
+  let xs = vec![1, 2, 3, 4, 5];
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+}
+
+```
+
+To tell rust that we are done with the immutable borrows before the end of the main, we can add another scope, a inner scope that end before the outer scope.
+
+in Rust > 1.24 this code will compile and works fine.
+
+```rust
+  fn main() {
+  let mut xs = vec![1, 2, 3, 4, 5];
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+
+  *xs.first_mut().expect("list was empty") += 1;
+}
+
+```
+
+But in versions < 1.24 we had to wrap our code in local inner scope to make it work.
+
+```rust
+fn main() {
+  let mut xs = vec![1, 2, 3, 4, 5];
+
+{
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+
+ }
+
+  *xs.first_mut().expect("list was empty") += 1;
+}
+
+```
+
+the `entry` method in rust defined on a `HashMap`.
+This method abstracts away the conditionals that handle if the key is present or not, and instead exposes methods to customize what to do in those cases.
+
+For example this code will not compile
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+  let sen = "Legia Waraszawa is the best team in the world!";
+
+  let mut freqs = HashMap::new();
+  let one_string: String = sen.split_whitespace().collect();
+
+  for char in one_string.chars() {
+    match freqs.get(char) {
+      Some(c) => *c += 1,
+      None => freqs.insert(char, 1),
+    }
+  }
+}
+
+```
+
+But when using the `entry` method we can easily split up the logic and make the compiler happy again.
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+  let sen = "Legia Waraszawa is the best team in the world!";
+
+  let mut freqs = HashMap::new();
+  let one_string: String = sen.split_whitespace().collect();
+
+  for char in one_string.chars() {
+
+    *freqs.entry(char).or_insert(0) += 1;
+  }
+}
+
+```
+
+`entry` works similar to a get method where you provide the key and you will get back both the key and the value pair.
+
+for example
+
+```rust
+  freqs.entry('l') // { key: 'l', value: 1 })
+```
 
 ## Slices <a name ="slices"></a>
 

@@ -14,6 +14,7 @@
   - [Slices <a name ="slices"></a>](#slices-)
   - [Self <a href = "self"></a>](#self-)
   - [Ownership <a name ="ownership"></a>](#ownership-)
+  - [Playground](#playground)
 
 ## About <a name = "about"></a>
 
@@ -64,6 +65,55 @@ To show ho a expression would look like we could been writing it like this.
 ## Control Flow <a name ="cf"></a>
 
 ## Enums <a name ="enums"></a>
+
+An `enum` is a a single type. That are fixed and describes a pattern of a static item, for example:
+
+```rust
+enum Day {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+}
+
+```
+
+We access the `variants` from the `enum` via `::` ex `Day::Friday`
+An `enum` can also hold data like tuples,unit struts ore records.
+
+```rust
+
+enum StatusMessage {
+    Success,                                // unit variant
+    Warning { code: i32, message: String }, // Struct variant
+    Error(String),                          // tuple variant
+}
+
+fn main() {
+    let mut form_status = StatusMessage::Success;
+    print_status(form_status);
+    form_status = StatusMessage::Warning {
+        code: 404,
+        message: String::from("Oooops!"),
+    };
+    print_status(form_status);
+    form_status = StatusMessage::Error(String::from("Error!"));
+    print_status(form_status);
+}
+
+fn print_status(status: StatusMessage) {
+    match status {
+        StatusMessage::Success => println!("Success "),
+        StatusMessage::Warning { code, message } => println!("Warning {} - {}", code, message),
+        StatusMessage::Error(msg) => println!("Error: {} ", msg),
+    }
+}
+
+}
+```
 
 ## Structs <a name ="structs"></a>
 
@@ -136,8 +186,82 @@ fn main() {
 
 ```
 
-`rust`
-`rust`
+another good example on using `C-like structs`
+
+```rust
+#[derive(Debug)]
+struct Shape {
+    width: u8,
+    height: u8,
+}
+
+impl Shape {
+    fn area(&self) -> u8 {
+        self.width * self.height
+    }
+
+    fn rectangle(width: u8, height: u8) -> Shape {
+        Shape { width, height }
+    }
+
+    fn square(side: u8) -> Shape {
+        Shape {
+            width: side,
+            height: side,
+        }
+    }
+}
+fn does_fit(s1: &Shape, s2: &Shape) -> bool {
+    s1.width >= s2.width && s1.height >= s2.height
+}
+
+fn main() {
+    let rec = Shape::rectangle(30, 25);
+    let square = Shape::square(15);
+
+    println!(
+        "this is a square {:?} and this is an rectangle {:?}",
+        square, rec
+    );
+
+    let does_fit_check_first = does_fit(&rec, &square);
+    let does_fit_check_second = does_fit(&square, &rec);
+
+    println!(
+        "first check = {}, second check = {} ",
+        does_fit_check_first, does_fit_check_second
+    );
+}
+
+```
+
+A tuple struct has only one element,
+we usually call it new-type pattern. Because it helps to create a new type.
+
+```rust
+  struct Rgb(u8, u8, u8);
+struct IsCool(bool);
+
+
+fn main() {
+    let blue = Rgb(2, 136, 209);
+    let cool = IsCool(true);
+}
+
+```
+
+Unit structs is not so common to use but are more powerful when combined with other features.
+
+```rust
+#[derive(Debug)]
+struct Foo;
+
+fn main() {
+    let f = Foo;
+    println!("{:?}", f); // Foo
+}
+
+```
 
 ## Methods <a name ="methods"></a>
 
@@ -179,7 +303,7 @@ Borrowing a value may feel similar to pointers if you been working with `C` ore 
 Like someone want's to borrow your car for a while.
 Even if your friend is using your car it is still your car and your responsibility to pay the taxes and stuff, in this case when it come to `rust` clean up after you.
 
-````rust
+```rust
 enum AnimalType {
   Dog,
     Cat,
@@ -206,6 +330,8 @@ fn main() {
         "I can still us dog here: {}, because we just barrowed the dog when passing goh to greet",
         dog.name
     );
+```
+
 ## Ownership <a name ="ownership"></a>
 
 Rust does not have any garbage collector like languages like `javascript`, `java` ore `golang`. To really understand `rust` we will go through how clearing up memory works in `rust` and how ownership works.
@@ -233,7 +359,7 @@ fn main() {
     println!("{}", a);
 }
 
-````
+```
 
 **Why do we borrowing?**
 With help of borrowing a value we gain performance. Instead of make a copy of a value and pass it to the function to create a new spot in memory, we can simply borrow the value and then give it back when we are finished.
@@ -328,6 +454,31 @@ fn main() {
     let a = String::from("legia");
     say_hi(&a);
     println!("{}", a);
+}
+
+```
+
+## Playground <a name ="playground"></a>
+
+A simple filter even numbers example not using built in filter function.
+
+```rust
+fn main() {
+    let xs: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+    let evenXs = evens(&xs);
+    println!("{:?}", evenXs);
+}
+
+fn evens(xs: &Vec<i32>) -> Vec<i32> {
+    let mut newXs: Vec<i32> = Vec::new();
+
+    for x in xs.iter() {
+        if x % 2 == 0 {
+            newXs.push(*x);
+        }
+    }
+    newXs
 }
 
 ```

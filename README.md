@@ -67,7 +67,10 @@ To show ho a expression would look like we could been writing it like this.
 
 ## Enums <a name ="enums"></a>
 
-An `enum` is a a single type. That are fixed and describes a pattern of a static item, for example:
+`Enums` allow you to define a type by enumerating its possible variants.
+It is very common to use `enums` for pattern matching in `rust`.
+`Rust’s` enums are most similar to algebraic data types in functional programming languages, such as F#, OCaml, and Haskell.
+An `Enum` is a a single type. That are fixed and describes a pattern, for example:
 
 ```rust
 enum Day {
@@ -83,7 +86,7 @@ enum Day {
 ```
 
 We access the `variants` from the `enum` via `::` ex `Day::Friday`
-An `enum` can also hold data like tuples,unit struts ore records.
+An `Enum` can also hold data like tuples,unit struts ore records.
 
 ```rust
 
@@ -115,6 +118,139 @@ fn print_status(status: StatusMessage) {
 
 }
 ```
+
+an `Enum` variant can also takes some values, and if we would patter match on this the values will be used in the match as well. Notice that in the match we could name them whatever we want.
+
+```rust
+#[derive(Debug)]
+enum IpAddrKind {
+    V4(u8, u8, u8, u8),
+    V6(String),
+}
+
+#[derive(Debug)]
+struct IpAddress {
+    kind: IpAddrKind,
+    address: String,
+}
+
+fn main() {
+    let one = IpAddrKind::V4(127, 0, 0, 1);
+    let two = IpAddrKind::V6(String::from("::6"));
+
+    show_ip(&one);
+    show_ip(&two);
+}
+
+fn show_ip(ip: &IpAddrKind) {
+    match ip {
+        IpAddrKind::V4(a, b, c, d) => println!("a={},b={},c={},d={}", a, b, c, d),
+        IpAddrKind::V6(x) => println!("V6 = {}", x),
+    }
+}
+
+```
+
+```rust
+#[derive(Debug)]
+
+enum Mood {
+    Sad(String),
+    Happy(String),
+    Angry(String),
+    Borred,
+    Nothing,
+}
+
+fn main() {
+    let mut mood = Mood::Sad(String::from("I am so Sad"));
+
+    show_mood(&mood);
+
+    mood = Mood::Happy(String::from("I want to cry!!!!🥲"));
+    show_mood(&mood);
+
+    mood = Mood::Angry(String::from("I just want to punch something😡"));
+    show_mood(&mood);
+
+    mood = Mood::Borred;
+    show_mood(&mood);
+
+    mood = Mood::Nothing;
+    show_mood(&mood);
+}
+
+fn show_mood(mood: &Mood) {
+    match mood {
+        Mood::Sad(msg) => println!("When is sad = {}", msg),
+        Mood::Happy(msg) => println!("When is happy = {}", msg),
+        Mood::Angry(msg) => println!("When is angry = {}", msg),
+        Mood::Borred => println!("😑"),
+        Mood::Nothing => println!("∞"),
+    }
+}
+
+```
+
+One important `Enum` in `Rust` is the built in `Option` enum.
+
+```rust
+  enum Option<T> {
+    Some(T),
+    None,
+}
+```
+
+There is no null in `Rust` like in many other programing languages, instead to check if something exists we use the `Option` enum.
+
+```rust
+  let some_num = Some(10); // Some(10)
+  let some_string = Some("Yoo"); // Some("Yoo")
+  let none_number: Option<i32> = None; // None
+
+```
+
+If we use None rather than Some, we need to tell `Rust` what type of Option<T> we have,
+this because the compiler will not know what type that the `Some` variant will be, only by looking on the `None` value.
+
+How we can match on the `Option<T>` `enum`.
+
+```rust
+  fn double(x: Option<i32>) -> Option<i32> {
+    match x {
+        Some(x) => Some(x * 2),
+        None => None,
+    }
+}
+
+  fn main() {
+      let twenty = double(Some(10));
+      let non_double = double(None);
+
+      println!("{:?}", twenty); // Some(20)
+      println!("{:?}", non_double); // None
+  }
+
+```
+
+if we not catch all cases in `Rust` we will get an compile error, to solve this we use the special pattern `_`
+
+```rust
+fn main() {
+  let x = 0u8;
+
+  match x {
+    1 => println!("one"),
+    2 => println!("two"),
+    3 => println!("three"),
+    4 => println!("four"),
+    _ => println!("no match"),
+  }
+}
+
+```
+
+<hr/>
 
 ## Structs <a name ="structs"></a>
 

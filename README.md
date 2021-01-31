@@ -11,9 +11,11 @@
   - [Structs <a name ="structs"></a>](#structs-)
   - [Methods <a name ="methods"></a>](#methods-)
   - [Borrowing <a name ="borrowing"></a>](#borrowing-)
+  - [Borrowing patterns <a name ="borrowing-patterns"></a>](#borrowing-patterns-)
   - [Slices <a name ="slices"></a>](#slices-)
   - [Self <a href = "self"></a>](#self-)
   - [Ownership <a name ="ownership"></a>](#ownership-)
+  - [Playground](#playground)
 
 ## About <a name = "about"></a>
 
@@ -65,7 +67,202 @@ To show ho a expression would look like we could been writing it like this.
 
 ## Enums <a name ="enums"></a>
 
+An `enum` is a a single type. That are fixed and describes a pattern of a static item, for example:
+
+```rust
+enum Day {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+}
+
+```
+
+We access the `variants` from the `enum` via `::` ex `Day::Friday`
+An `enum` can also hold data like tuples,unit struts ore records.
+
+```rust
+
+enum StatusMessage {
+    Success,                                // unit variant
+    Warning { code: i32, message: String }, // Struct variant
+    Error(String),                          // tuple variant
+}
+
+fn main() {
+    let mut form_status = StatusMessage::Success;
+    print_status(form_status);
+    form_status = StatusMessage::Warning {
+        code: 404,
+        message: String::from("Oooops!"),
+    };
+    print_status(form_status);
+    form_status = StatusMessage::Error(String::from("Error!"));
+    print_status(form_status);
+}
+
+fn print_status(status: StatusMessage) {
+    match status {
+        StatusMessage::Success => println!("Success "),
+        StatusMessage::Warning { code, message } => println!("Warning {} - {}", code, message),
+        StatusMessage::Error(msg) => println!("Error: {} ", msg),
+    }
+}
+
+}
+```
+
 ## Structs <a name ="structs"></a>
+
+With `Structs` we can structure our `rust` programs in a more logical and proper way.
+Structs are used to encapsulate related properties into one unified data type.
+`rust` follows a convention to use `PascalCase` when creating structs.
+
+There are 3 different structs in `rust`
+
+1. **C-like structs**
+
+- Similar to classes if you coming from a `OOP` background.
+- Fields has key's so we can access properties via dot notation
+
+2. **Tuple structs**
+
+- One ore more values separated with a comma, no key value pairs!
+- uses parenthesizes instead of curly brackets
+
+3. **Unit structs**
+
+- useful when using generics
+
+**C-like-struct**
+
+```rust
+  #[derive(Debug)]
+struct Dog {
+    name: String,
+    age: u8,
+    owner: Person,
+}
+
+#[derive(Debug)]
+struct Person {
+    name: String,
+    age: u8,
+    cool: bool,
+}
+
+impl Dog {
+    fn new(name: String, age: u8, owner: Person) -> Self {
+        Dog { name, age, owner }
+    }
+
+    fn greet(&self) {
+        println!(
+            "Hello my name is {} and my owner is {:?}",
+            self.name, self.owner.name
+        );
+    }
+}
+
+impl Person {
+    fn new(name: String, age: u8, cool: bool) -> Self {
+        Person { name, age, cool }
+    }
+}
+
+fn main() {
+    let bob = Person::new(String::from("Bob"), 34, true);
+    let mike = Person::new(String::from("Mike"), 21, true);
+
+    let snickers = Dog::new(String::from("Snickers"), 2, bob);
+    let logan = Dog::new(String::from("Logan"), 6, mike);
+
+    snickers.greet();
+    // Hello my name is Snickers and my owner is "Bob"
+}
+
+```
+
+another good example on using `C-like structs`
+
+```rust
+#[derive(Debug)]
+struct Shape {
+    width: u8,
+    height: u8,
+}
+
+impl Shape {
+    fn area(&self) -> u8 {
+        self.width * self.height
+    }
+
+    fn rectangle(width: u8, height: u8) -> Shape {
+        Shape { width, height }
+    }
+
+    fn square(side: u8) -> Shape {
+        Shape {
+            width: side,
+            height: side,
+        }
+    }
+}
+fn does_fit(s1: &Shape, s2: &Shape) -> bool {
+    s1.width >= s2.width && s1.height >= s2.height
+}
+
+fn main() {
+    let rec = Shape::rectangle(30, 25);
+    let square = Shape::square(15);
+
+    println!(
+        "this is a square {:?} and this is an rectangle {:?}",
+        square, rec
+    );
+
+    let does_fit_check_first = does_fit(&rec, &square);
+    let does_fit_check_second = does_fit(&square, &rec);
+
+    println!(
+        "first check = {}, second check = {} ",
+        does_fit_check_first, does_fit_check_second
+    );
+}
+
+```
+
+A tuple struct has only one element,
+we usually call it new-type pattern. Because it helps to create a new type.
+
+```rust
+  struct Rgb(u8, u8, u8);
+struct IsCool(bool);
+
+
+fn main() {
+    let blue = Rgb(2, 136, 209);
+    let cool = IsCool(true);
+}
+
+```
+
+Unit structs is not so common to use but are more powerful when combined with other features.
+
+```rust
+#[derive(Debug)]
+struct Foo;
+
+fn main() {
+    let f = Foo;
+    println!("{:?}", f); // Foo
+}
+
+```
 
 ## Methods <a name ="methods"></a>
 
@@ -107,7 +304,7 @@ Borrowing a value may feel similar to pointers if you been working with `C` ore 
 Like someone want's to borrow your car for a while.
 Even if your friend is using your car it is still your car and your responsibility to pay the taxes and stuff, in this case when it come to `rust` clean up after you.
 
-````rust
+```rust
 enum AnimalType {
   Dog,
     Cat,
@@ -134,6 +331,8 @@ fn main() {
         "I can still us dog here: {}, because we just barrowed the dog when passing goh to greet",
         dog.name
     );
+```
+
 ## Ownership <a name ="ownership"></a>
 
 Rust does not have any garbage collector like languages like `javascript`, `java` ore `golang`. To really understand `rust` we will go through how clearing up memory works in `rust` and how ownership works.
@@ -161,13 +360,135 @@ fn main() {
     println!("{}", a);
 }
 
-````
+```
 
 **Why do we borrowing?**
 With help of borrowing a value we gain performance. Instead of make a copy of a value and pass it to the function to create a new spot in memory, we can simply borrow the value and then give it back when we are finished.
 
 - What is borrowing? lend out a value instead of transferring ownership
 - Why borrow? reduce allocations, improve performance
+
+## Borrowing Patterns <a name = "#borrowing-patterns"> </a>
+
+How does the compiler works when follow different patterns in rust?
+Borrowing patterns in rust is great to know to have much better understanding how the complier works, and to learn to work with the complier and not against it.
+
+`At the same time`, what does this actually mean?
+Most when you here somone says `Borrow at the same time` they mean they are the same lexical scope created by curly brackets.
+
+```
+At the same time = in the same scope
+```
+
+```rust
+fn main() {
+  let xs = vec![1, 2, 3, 4, 5];
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+}
+
+```
+
+To tell rust that we are done with the immutable borrows before the end of the main, we can add another scope, a inner scope that end before the outer scope.
+
+in Rust > 1.24 this code will compile and works fine.
+
+```rust
+  fn main() {
+  let mut xs = vec![1, 2, 3, 4, 5];
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+
+  *xs.first_mut().expect("list was empty") += 1;
+}
+
+```
+
+But in versions < 1.24 we had to wrap our code in local inner scope to make it work.
+
+```rust
+fn main() {
+  let mut xs = vec![1, 2, 3, 4, 5];
+
+{
+
+  let first = xs.first();
+  let last = xs.last();
+
+  println!(
+    "The first number is {:?} and the last number is {:?}",
+    first, last
+  );
+
+ }
+
+  *xs.first_mut().expect("list was empty") += 1;
+}
+
+```
+
+the `entry` method in rust defined on a `HashMap`.
+This method abstracts away the conditionals that handle if the key is present or not, and instead exposes methods to customize what to do in those cases.
+
+For example this code will not compile
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+  let sen = "Legia Waraszawa is the best team in the world!";
+
+  let mut freqs = HashMap::new();
+  let one_string: String = sen.split_whitespace().collect();
+
+  for char in one_string.chars() {
+    match freqs.get(char) {
+      Some(c) => *c += 1,
+      None => freqs.insert(char, 1),
+    }
+  }
+}
+
+```
+
+But when using the `entry` method we can easily split up the logic and make the compiler happy again.
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+  let sen = "Legia Waraszawa is the best team in the world!";
+
+  let mut freqs = HashMap::new();
+  let one_string: String = sen.split_whitespace().collect();
+
+  for char in one_string.chars() {
+
+    *freqs.entry(char).or_insert(0) += 1;
+  }
+}
+
+```
+
+`entry` works similar to a get method where you provide the key and you will get back both the key and the value pair.
+
+for example
+
+```rust
+  freqs.entry('l') // { key: 'l', value: 1 })
+```
 
 ## Slices <a name ="slices"></a>
 
@@ -256,6 +577,31 @@ fn main() {
     let a = String::from("legia");
     say_hi(&a);
     println!("{}", a);
+}
+
+```
+
+## Playground <a name ="playground"></a>
+
+A simple filter even numbers example not using built in filter function.
+
+```rust
+fn main() {
+    let xs: Vec<i32> = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+    let evenXs = evens(&xs);
+    println!("{:?}", evenXs);
+}
+
+fn evens(xs: &Vec<i32>) -> Vec<i32> {
+    let mut newXs: Vec<i32> = Vec::new();
+
+    for x in xs.iter() {
+        if x % 2 == 0 {
+            newXs.push(*x);
+        }
+    }
+    newXs
 }
 
 ```

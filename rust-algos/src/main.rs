@@ -1,22 +1,12 @@
 // use std::collections::HashMap;
+mod app;
 
 fn main() {
-    // let mut res = check_palindrome(String::from("apa"));
-    // let r = String::from("III");
-    // roman_to_int(r);
-    let res = adjacent_elements_product(vec![3, 6, -2, -5, 7, 3]);
-    println!("res {}", res);
-}
-
-fn adjacent_elements_product(input_array: Vec<i32>) -> i32 {
-    let mut res = <i32>::min_value();
-    for i in 0..input_array.len() - 1 {
-        let prod = input_array[i] * input_array[i + 1];
-        if prod > res {
-            res = prod;
-        }
-    }
-    res
+    //  app::algos::adjacent_elements_product(vec![3, 6, -2, -5, 7, 3]);
+    println!(
+        "is_palindrome = {}",
+        app::algos::is_palindrome(String::from("racecar"))
+    );
 }
 
 // fn roman_to_int(s: String) -> i32 {

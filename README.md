@@ -16,6 +16,8 @@
   - [Self <a href = "self"></a>](#self-)
   - [Ownership <a name ="ownership"></a>](#ownership-)
   - [Panic](#panic)
+  - [Result and Options](#rao)
+  - [Generics](#generics)
   - [Playground](#playground)
 
 ## About <a name = "about"></a>
@@ -398,6 +400,28 @@ fn main() {
     let f = Foo;
     println!("{:?}", f); // Foo
 }
+
+```
+
+## Associated functions <a name="associated-fns"></a>
+
+some languages support static methods, we call a method directly on a class without createing a instance of the class, a new object.
+In Rust, we call them `Associated Functions`. we use :: instead of . when calling them from the struct.
+ex.
+
+```rust
+struct Dog {
+  name: String,
+  age: i32,
+}
+
+impl Dog {
+  fn new(name: String,age: i32) -> Dog {
+    Dog{ name,age}
+  }
+}
+
+ Dog::new("snickers", 32);
 
 ```
 
@@ -795,6 +819,46 @@ fn main() {
 
 <hr/>
 
+## Result and Options <a name="rao"></a>
+
+How can we use `Result` and `Option` enum in a effective way.
+
+`Result` enum is a enum defined by the standard library.
+It has 2 variants. When a function or method returns a value of type `Result`, if everything went well we will get back the `Ok` variant of the result with a value inside.
+
+If something goes wrong, you''ll get back the `Err` variant of the result.
+
+`Options` is similar to `Result` except that instead of giving back a success ore a failure we either have the value or we don't have the value.
+
+Fo example the `vector` has a built in `last` method that returns a `Option`
+
+```rust
+  fn main() {
+    let xs = vec![1, 2, 3, 4];
+    let num_four = xs.last();
+
+    let empty_xs: Vec<u8> = vec![];
+
+    println!("{:?}", num_four); // Some(4)
+    println!("{:?}", empty_xs.last()); // None
+}
+
+```
+
+<hr/>
+
+## Generics <a name ="generics"></a>
+
+```rust
+  struct JiraTask {
+    title: String,
+    developer: Option<Dev>
+  }
+
+
+```
+
+<hr/>
 ## Playground <a name ="playground"></a>
 
 A simple filter even numbers example not using built in filter function.

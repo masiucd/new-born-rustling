@@ -1,14 +1,31 @@
-fn fizz_buzz(n: u32) {
-    for i in 0..n {
-        match i {
-            i if (i % 5 == 0 && i % 3 == 0) => println!("fizz buzz"),
-            i if (i % 3 == 0) => println!("fizz"),
-            i if (i % 5 == 0) => println!("buzz"),
-            _ => println!("{}", n),
+#[derive(Debug)]
+struct Player {
+    first_name: String,
+    last_name: String,
+    age: i32,
+}
+
+// almost like a interface if you come from TS
+trait FullName {
+    fn full_name(&self) -> String;
+    fn new(first_name: String, last_name: String, age: i32) -> Player;
+}
+
+impl FullName for Player {
+    fn full_name(&self) -> String {
+        format!("{},{}", self.first_name, self.last_name)
+    }
+    fn new(first_name: String, last_name: String, age: i32) -> Player {
+        Player {
+            first_name,
+            last_name,
+            age,
         }
     }
 }
 
 fn main() {
-    fizz_buzz(100);
+    let mike = Player::new(String::from("Mike"), String::from("smith"), 32);
+
+    println!("p1 is {:?}", mike.full_name())
 }

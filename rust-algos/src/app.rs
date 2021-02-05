@@ -23,4 +23,15 @@ pub mod algos {
     }
     return nums.len() as i32;
   }
+
+  pub fn fizz_buzz(n: i32) {
+    for i in 0..n {
+      match i {
+        i if (i % 5 == 0) => println!("Fizz"),
+        i if (i % 3 == 0) => println!("Buzz"),
+        i if (i % 15 == 0) => println!("Fizz Buzz"),
+        _ => println!("{}", i),
+      }
+    }
+  }
 }

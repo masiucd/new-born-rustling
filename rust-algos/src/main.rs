@@ -7,6 +7,8 @@ fn main() {
         "is_palindrome = {}",
         app::algos::is_palindrome(String::from("racecar"))
     );
+
+    println!("{}", app::algos::search_insert(vec![1, 2, 3, 5, 6], 4))
 }
 
 // fn roman_to_int(s: String) -> i32 {

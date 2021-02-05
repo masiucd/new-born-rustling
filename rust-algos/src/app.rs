@@ -14,4 +14,13 @@ pub mod algos {
   pub fn is_palindrome(s: String) -> bool {
     s.chars().rev().collect::<String>() == s
   }
+
+  pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
+    for (i, v) in nums.iter().enumerate() {
+      if target < *v {
+        return i as i32;
+      }
+    }
+    return nums.len() as i32;
+  }
 }

@@ -18,6 +18,7 @@
   - [Panic](#panic)
   - [Result and Options](#rao)
   - [Generics](#generics)
+  - [Functional Programming](#fp)
   - [Playground](#playground)
 
 ## About <a name = "about"></a>
@@ -859,6 +860,39 @@ Fo example the `vector` has a built in `last` method that returns a `Option`
 ```
 
 <hr/>
+
+## Functional programming <a name ="functional programming"></a>
+
+Create our own `PURE` map function without mutating the original list.
+
+```rust
+
+fn main() {
+    let xs = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    let result = transform(&xs, double);
+    println!("{:?}", result);
+    println!("{:?}", xs);
+}
+
+fn double(x: &i32) -> i32 {
+    x * 2
+}
+
+fn transform(xs: &Vec<i32>, func: fn(x: &i32) -> i32) -> Vec<i32> {
+    let mut new_list: Vec<i32> = Vec::new();
+
+    for x in xs {
+        new_list.push(func(x));
+    }
+
+    new_list
+}
+
+```
+
+<hr/>
+
 ## Playground <a name ="playground"></a>
 
 A simple filter even numbers example not using built in filter function.

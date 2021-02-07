@@ -34,4 +34,23 @@ pub mod algos {
       }
     }
   }
+
+  pub fn is_anagram(s: String, t: String) -> bool {
+    if s.len() != t.len() {
+      return false;
+    }
+
+    let mut char_count1 = std::collections::HashMap::with_capacity(s.len());
+    let mut char_count2 = std::collections::HashMap::with_capacity(t.len());
+
+    for char in s.chars() {
+      *char_count1.entry(char).or_insert(0) += 1
+    }
+
+    for char in t.chars() {
+      *char_count2.entry(char).or_insert(0) += 1
+    }
+
+    return char_count1 == char_count2;
+  }
 }

@@ -6,6 +6,7 @@
   - [Table of Contents](#table-of-contents)
   - [About <a name = "about"></a>](#about-)
   - [Statement vs Expression <a name ="s-vs-e"></a>](#statement-vs-expression-)
+  - [Tuple](#tuples)
   - [Control Flow <a name ="cf"></a>](#control-flow-)
   - [Enums <a name ="enums"></a>](#enums-)
   - [Structs <a name ="structs"></a>](#structs-)
@@ -23,7 +24,7 @@
 
 ## About <a name = "about"></a>
 
-New born ruslang, a beginner repo that will go through the very basics in rust such as
+New born rustlang, a beginner repo that will go through the very basics in rust such as
 `[Control Flow](#cf)`, `[Structs](#structs)` `[Methods](#methods)` and so much more.
 
 Rust is a system level programing language, but it is so much more thane that. Me personally that coming from a `Javascript` background, Rust is a game changer, people think that web-assembly and rust will replace `Javascript` but I don't think it is like that. I know that Rust together with Javascript will make `Javascript` so much more powerful and only the feature can tell us what it will bring.
@@ -66,6 +67,45 @@ To show ho a expression would look like we could been writing it like this.
   }
 
 ```
+
+## Tuples <a name ="tuples"></a>
+
+A tuple is a collection of different types wrapped in parentheses `()`. There is no fixed value for the tuple but is is common to not have it to long, around 2-4 types i would say `(t1,tw,t3,t4)`.
+
+```rust
+  struct TupleType(u8, f32, String, bool);
+  let foo = TupleType(2, 2.5, "legia".to_string(), true);
+```
+
+```rust
+fn main() {
+    let matrix_t = ((10, 20), (1, 2));
+    println!("{:?}", matrix_t);
+    let revesed_tuple_matrix = rev(matrix_t);
+}
+
+fn rev(t: ((i32, i32), (i32, i32))) -> ((i32, i32), (i32, i32)) {
+    let (t1, t2) = t;
+    ((t1.1, t1.0), (t2.1, t2.0))
+}
+
+fn reverse_with_tuple(pair: (i32, i32)) -> (i32, i32) {
+    let (a, b) = pair;
+    (b, a)
+}
+
+```
+
+To access a value from the tuple we use dot notation and the spot they are in, starting from 0.
+
+```rust
+let foo = TupleType(2, 2.5, "legia".to_string(), true);
+
+println!("{:?}", foo.0); // 2
+println!("{:?}", foo.2); // Legia
+```
+
+<hr/>
 
 ## Control Flow <a name ="cf"></a>
 

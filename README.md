@@ -846,6 +846,19 @@ Fo example the `vector` has a built in `last` method that returns a `Option`
 
 ```
 
+`Panics` is for situation that show that we are in a bad state and that the developer has a bug to fix. We stop executing the program and there is now way to recover from the panic so we must go in and fix that.
+
+`Result` are used to situations where the program might take some actions to recover from. Could be for example read from a file, either we have it or not, there are just 2 cases.
+
+There is a method on Result and Option called `expect` that has similar behavior to using match expression when recovering from errors.
+
+```rust
+  let string_num: i32 = "10".parse().expect("ooops"); // while compile
+  let foo: i32 = "foo".parse().expect("ooops"); // will NOT compile
+
+  println!("{},{}", string_num, foo);
+```
+
 <hr/>
 
 ## Generics <a name ="generics"></a>

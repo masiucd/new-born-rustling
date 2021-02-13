@@ -1,3 +1,4 @@
+// use math::round;
 use std::collections::HashMap;
 
 fn zip_to_map(xs1: &Vec<&str>, xs2: &Vec<i32>) {
@@ -24,9 +25,33 @@ fn anagram(w1: &str, w2: &str) -> bool {
     true
 }
 
+fn mean(xs: &Vec<i32>) -> f32 {
+    let len = xs.len() as f32;
+    let mut sum: f32 = 0.0;
+    for &i in xs.iter() {
+        let x = i as f32;
+        sum += x;
+    }
+    sum / len
+}
+
+// fn median(xs: &Vec<i32>) -> &i32 {
+//     let middle_index = (&xs[0] + &xs[xs.len() - 1]) / 2;
+
+//     // if &xs.len() % 2 != 0 {
+//     // } else {
+//     // }
+// }
+
 fn main() {
-    let s1 = "abcd";
-    let s2 = "abcd";
-    let res = anagram(&s1, &s2);
-    println!("{}", res);
+    let mut store = HashMap::new();
+
+    let word = "Legia warszawa";
+
+    for c in word.chars() {
+        let c = store.entry(c).or_insert(0);
+        *c += 1;
+    }
+
+    println!("{:?}", store);
 }

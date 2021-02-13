@@ -10,6 +10,15 @@ pub mod algos {
     }
     res
   }
+  pub fn mean(xs: &Vec<i32>) -> f32 {
+    let len = xs.len() as f32;
+    let mut sum: f32 = 0.0;
+    for &i in xs.iter() {
+      let x = i as f32;
+      sum += x;
+    }
+    sum / len
+  }
 
   pub fn is_palindrome(s: String) -> bool {
     s.chars().rev().collect::<String>() == s
@@ -52,5 +61,15 @@ pub mod algos {
     }
 
     return char_count1 == char_count2;
+  }
+
+  pub fn reverse_str_3(s: &str) -> String {
+    let mut res = String::new();
+
+    for i in s.chars() {
+      res = i.to_string() + &res;
+    }
+    println!("{}", res);
+    res
   }
 }

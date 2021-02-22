@@ -8,3 +8,6 @@ When you were born you and your parents lived a specific address. And a few year
 If someone had your old address adn tried to visit you would not be there, because you would be on a different address.
 
 value in code starts when a value is created or moved into a particular location in memory, adn ends when the value is moved of or dropped from that location.
+
+<img src="./rust-life.svg" />
+<img src="./carbon.svg" />

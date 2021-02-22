@@ -1,68 +1,61 @@
-#[derive(Debug)]
-struct Point<T> {
-    x: T,
-    y: T,
-}
+// fn highest_num<T>(xs: &[T]) -> &i32 {
+//     let mut max = &xs[0];
+
+//     for i in xs.iter() {
+//         if max < i {
+//             max = i
+//         }
+//     }
+
+//     max
+// }
 
 #[derive(Debug)]
-struct User<T> {
-    name: String,
-    last_name: String,
-    age: T,
-    cool: bool,
+struct Point<T> {
+    y: T,
+    x: T,
 }
 
 impl<T> Point<T> {
     fn new(x: T, y: T) -> Point<T> {
         Point { x, y }
     }
-
-    fn get_x(&self) -> &T {
-        &self.x
-    }
-    fn get_y(&self) -> &T {
-        &self.y
-    }
-}
-
-impl Point<i32> {
-    fn sum_x_and_y(&self) -> i32 {
-        &self.x + &self.y
-    }
-}
-
-impl User<i32> {
-    fn new(name: String, last_name: String, age: i32, cool: bool) -> User<i32> {
-        User {
-            name,
-            last_name,
-            age,
-            cool,
+    fn mix_up(self, other: Point<T>) -> Point<T> {
+        Point {
+            x: self.x,
+            y: other.y,
         }
     }
-
-    fn full_name(&self) -> String {
-        format!("{} {} ", self.name, self.last_name)
-    }
 }
 
-fn get_user(name: &str) -> Option<&str> {
-    // if we find the user
-    if name == "foo" {
-        Some(name)
-    } else {
-        None
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
 }
 
 fn main() {
-    let p1 = Point::new(20, 32);
-    println!("{}", p1.sum_x_and_y());
-    // let u1 = get_user("bob");
-    // println!("{:?}", u1);
+    let p1 = Point::new(45.2, 22.21);
+    let p2 = Point::new(49.4, 12.31);
 
-    // let u2 = get_user("foo");
-    // println!("{:?}", u2);
+    println!("{:?}", p1.distance_from_origin());
 
-    // let u1:User<i32> = User::new(String::from("greg"), age: 12, cool: true);
+    let x = p1.mix_up(p2);
+    println!("{:?}", x);
+
+    let integer = Some(99);
+
+    // println!("{:?}", integer);
+
+    match integer {
+        Some(integer) => println!("{}", integer),
+        None => println!("no int"),
+    }
+
+    // let xs = vec![1, 99, 2, 3, 66, 4];
+    // let chars = vec!['a', 'b', 'c', 'd', 'e'];
+
+    // let res = highest_num::<i32>(&xs);
+    // let res = highest_num::<char>(&chars);
+    // println!("{}", res);
 }

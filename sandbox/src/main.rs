@@ -1,27 +1,31 @@
 #[derive(Debug)]
-struct Person {
-    name: String,
-    age: u32,
-    cool: bool,
+enum Clock {
+    A(u8),
+    B(u8, u8),
+    C(u8, u8, u8),
 }
 
-impl Person {
-    fn new(name: String, age: u32, cool: bool) -> Person {
-        Person { name, age, cool }
-    }
+#[derive(Debug)]
+struct Thing {
+    name: String,
+    clock: Clock,
+}
 
-    fn birth_day(&mut self) {
-        self.age += 1
+impl Thing {
+    fn new(name: String, clock: Clock) -> Thing {
+        Thing { name, clock }
     }
-
-    fn new_name(&mut self, name: String) {
-        self.name = name
+    fn match_clock(&self) {
+        match self.clock {
+            Clock::A(a) => println!("just hours of {}", a),
+            Clock::B(a, b) => println!("just hours {} and minutes {}", a, b),
+            Clock::C(a, b, c) => println!("just hours {}  minutes {} and seconds {}", a, b, c),
+        }
     }
 }
 
 fn main() {
-    let mut user1 = Person::new("John".to_string(), 21, true);
-    user1.birth_day();
-    user1.new_name("Frank".to_string());
-    println!("{:?}", user1);
+    let thing_one = Thing::new("foo".to_string(), Clock::B(21, 2));
+    println!("{:?}", thing_one);
+    thing_one.match_clock()
 }

@@ -4,24 +4,26 @@
 
 - [New born ruslang](#new-born-ruslang)
   - [Table of Contents](#table-of-contents)
-  - [About <a name = "about"></a>](#about-)
-  - [Statement vs Expression <a name ="s-vs-e"></a>](#statement-vs-expression-)
+  - [About](#about)
+  - [Data types](#data-types)
+  - [Functions](#functions)
+  - [Statement vs Expression](#statement-vs-expression)
   - [Tuple](#tuples)
-  - [Control Flow <a name ="cf"></a>](#control-flow-)
-  - [Enums <a name ="enums"></a>](#enums-)
-  - [Structs <a name ="structs"></a>](#structs-)
-  - [Methods <a name ="methods"></a>](#methods-)
-  - [Borrowing <a name ="borrowing"></a>](#borrowing-)
-  - [Borrowing patterns <a name ="borrowing-patterns"></a>](#borrowing-patterns-)
-  - [Slices <a name ="slices"></a>](#slices-)
-  - [Self <a href = "self"></a>](#self-)
-  - [Ownership <a name ="ownership"></a>](#ownership-)
+  - [Control Flow](#control-flow)
+  - [Enums](#enums)
+  - [Structs](#structs)
+  - [Methods](#methods)
+  - [Borrowing](#borrowing)
+  - [Borrowing patterns](#borrowing-patterns)
+  - [Slices](#slices)
+  - [Self](#self)
+  - [Ownership](#ownership)
   - [Result and Options](#rao)
   - [Generics](#generics)
   - [Functional Programming](#fp)
   - [Playground](#playground)
 
-## About <a name = "about"></a>
+## [About](#about)
 
 New born rustlang, a beginner repo that will go through the very basics in rust such as
 `[Control Flow](#cf)`, `[Structs](#structs)` `[Methods](#methods)` and so much more.
@@ -32,7 +34,86 @@ Javascript developers will use Rust and web assembly without even knowing it, if
 
 This Repo is for you as a `JS` developer to learn the fundamentals in `Rust` and how it could help you to become a much better `Javascript` developer
 
-## Statement vs Expression <a name ="s-vs-e"></a>
+## [Data types](#data-types)
+
+| Signed | Unsigned |
+| ------ | -------- |
+| i8     | u8       |
+| i16    | u16      |
+| i32    | u32      |
+| i64    | u64      |
+
+An `i8` will store 8 bits in memory. `I` means signed, and we can store either positive or negative numbers with signed integers.
+The rest of the bits store the value of the number. This means that an i8 can store the values between -128 and 127, inclusive.
+If we know that the number we will use is just positive we could use a unsigned integer instead, with `u` keyword in front.
+Because the unsigned types don't use a bit to store the sign, the range of values they can store is different.
+A `u8` can store the values between 0 and 255.
+The `isize` and `usize` integer types are architecture dependent.
+If you are using a 32-bit machine, they will take up `32-bit` of space.
+Using a `64-bit` machine they will take up `64-bit` of space.
+
+We use `isize` and `usize` for indexing into collections or counting items.
+
+```rust
+  let num:u32 = 100;
+```
+
+Floating point numbers in `Rust` is either a `f32` or `f64` type.
+using 32 and 64 bits, respectively.
+
+```rust
+  let my_float:f32 = 25.05;
+```
+
+Characters are our last simple data type. Rust can store single characters as the char data type.
+`char` can hold more than just `ASCII` values since `char` is a Unicode scalar value.
+We write characters with single quotes;
+
+```rust
+  let my_char = 'a';
+  let soda = '🥤';
+```
+
+```rust
+fn match_tup(tup: &(i32, &str, char, bool)) {
+    match tup {
+        (1, _, _, _) => println!("it is a integer"),
+        (_, _, _, true) => println!("It is true"),
+        _ => println!("Either a string ore a char"),
+    }
+}
+
+fn main() {
+    let tup = (1, "apples", '🚀', true);
+
+    match_tup(&tup);
+}
+```
+
+## [Functions](#functions)
+
+Functions in `Rust` are defined wit the `fn` keyword.
+when returning from the function we need to define the type.
+If it is not returning anything then we leave the return type.
+
+```rust
+fn square(num: i32) -> i32 {
+    num * num
+}
+
+fn greet(name: &str) {
+    println!("Hello {} ", name);
+}
+
+fn main() {
+    let num = square(10);
+    println!("{}", num);
+    greet("Mia");
+}
+
+```
+
+## [Statement vs Expression](#s-vs-e)
 
 To know statement vs expression is important specially in `rust` when to add
 semicolon or not. A statement is something that we currently do in part of code
@@ -67,7 +148,7 @@ To show ho a expression would look like we could been writing it like this.
 
 ```
 
-## Tuples <a name ="tuples"></a>
+## [Tuples](#tuples)
 
 A tuple is a collection of different types wrapped in parentheses `()`. There is no fixed value for the tuple but is is common to not have it to long, around 2-4 types i would say `(t1,tw,t3,t4)`.
 
@@ -104,11 +185,112 @@ println!("{:?}", foo.0); // 2
 println!("{:?}", foo.2); // Legia
 ```
 
-<hr/>
+---
 
-## Control Flow <a name ="cf"></a>
+## [Control Flow](#control-flow)
 
-## Enums <a name ="enums"></a>
+Like with functions, we can get a value from an if or else block by leaving the semicolon off of the last expression in the block.
+We can then put that value in a variable. Note, that the semicolon is required to end the variable assignment statement.
+It is similar to a ternary operator in languages like `Java` or `Javascript` .
+
+```rust
+fn main() {
+    discount(2);
+}
+
+fn discount(day_of_month: u8) {
+    let amount = if day_of_month % 2 == 0 { 25 } else { 20 };
+
+    println!("Your discount is {}", amount);
+}
+
+```
+
+To create a simple loop in `Rust` we can use the `loop` keyword.
+This will give us a infinite loop if don't have any statement in our loop.
+
+```rust
+fn main() {
+    let mut c = 0;
+    loop {
+        if c == 10 {
+            break;
+        }
+        c += 1;
+        println!("nooooooo");
+    }
+}
+```
+
+### A small guising game
+
+```rust
+use std::io;
+
+fn main() {
+    loop {
+        println!("best team in the universe?");
+        let mut answer = String::new();
+        io::stdin()
+            .read_line(&mut answer)
+            .expect("Failed to read line");
+
+        if answer.trim() == "legia" {
+            break;
+        }
+    }
+    println!("Great job!");
+}
+
+```
+
+The `loop` keyword is similar to a `while` loop and we could also in ths case been using a while loop instead.
+
+```rust
+use std::io;
+
+fn main() {
+    let mut answer = String::new();
+    while answer.trim() != "legia" {
+        println!("best team in the universe?");
+        answer = String::new();
+        io::stdin()
+            .read_line(&mut answer)
+            .expect("Failed to read line");
+    }
+    println!("Great job!");
+}
+
+```
+
+A simple for loop in `rust`
+
+```rust
+for i in 0..11 {
+        println!("{}", i)
+    }
+```
+
+loop over vectors with a index:
+
+```rust
+fn main() {
+    let cars = vec!["audi", "mercedes", "bmw", "volvo", "ferrari"];
+    let mut xs: Vec<&str> = Vec::new();
+    for car in cars.iter() {
+        println!("{}", car)
+    }
+    xs.push("apple");
+    xs.push("banana");
+
+    for (i, x) in xs.iter().enumerate() {
+        println!("{},{}", i, x)
+    }
+}
+
+```
+
+## [Enums](#enums)
 
 `Enums` allow you to define a type by enumerating its possible variants.
 It is very common to use `enums` for pattern matching in `rust`.

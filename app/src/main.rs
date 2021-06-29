@@ -1,13 +1,8 @@
 fn main() {
-    let cars = vec!["audi", "mercedes", "bmw", "volvo", "ferrari"];
-    let mut xs: Vec<&str> = Vec::new();
-    for car in cars.iter() {
-        println!("{}", car)
-    }
-    xs.push("apple");
-    xs.push("banana");
+    let cars: Vec<String> = vec!["audi", "mercedes", "bmw", "volvo", "ferrari"]
+        .iter()
+        .map(|x| x.to_uppercase())
+        .collect();
 
-    for (i, x) in xs.iter().enumerate() {
-        println!("{},{}", i, x)
-    }
+    println!("{:?}", cars);
 }

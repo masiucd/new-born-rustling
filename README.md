@@ -8,20 +8,23 @@
   - [Data types](#data-types)
   - [Functions](#functions)
   - [Statement vs Expression](#statement-vs-expression)
-  - [Tuple](#tuples)
+  - [Tuples](#tuples)
   - [Control Flow](#control-flow)
+    - [guising game](#guising-game)
   - [Enums](#enums)
   - [Structs](#structs)
+  - [Associated functions](#associated-functions)
   - [Methods](#methods)
   - [Borrowing](#borrowing)
-  - [Borrowing patterns](#borrowing-patterns)
-  - [Slices](#slices)
-  - [Self](#self)
-  - [Ownership](#ownership)
-  - [Result and Options](#rao)
-  - [Generics](#generics)
-  - [Functional Programming](#fp)
-  - [Playground](#playground)
+  - [Ownership <a name ="ownership"></a>](#ownership-)
+  - [Borrowing Patterns <a name = "#borrowing-patterns"> </a>](#borrowing-patterns--)
+  - [Slices <a name ="slices"></a>](#slices-)
+  - [Self <a href = "self"></a>](#self-)
+  - [Result and Options <a name="rao"></a>](#result-and-options-)
+  - [Generics <a name ="generics"></a>](#generics-)
+  - [Functional programming <a name ="functional programming"></a>](#functional-programming-)
+      - [Playground](#playground)
+      - [Higher order functions in `Rust`](#higher-order-functions-in-rust)
 
 ## [About](#about)
 
@@ -222,7 +225,7 @@ fn main() {
 }
 ```
 
-### A small guising game
+### guising game
 
 ```rust
 use std::io;
@@ -294,6 +297,7 @@ fn main() {
 
 `Enums` allow you to define a type by enumerating its possible variants.
 It is very common to use `enums` for pattern matching in `rust`.
+`Enums` are great for defining types that can be one of a possible set of values. They can optionally hold extra data, and we can use match expressions to make decisions based on which variant we have, and use the patterns to destructor the values in the variants.
 `Rust’s` enums are most similar to algebraic data types in functional programming languages, such as F#, OCaml, and Haskell.
 An `Enum` is a a single type. That are fixed and describes a pattern, for example:
 
@@ -383,7 +387,7 @@ enum Mood {
     Sad(String),
     Happy(String),
     Angry(String),
-    Borred,
+    Bored,
     Nothing,
 }
 
@@ -410,7 +414,7 @@ fn show_mood(mood: &Mood) {
         Mood::Sad(msg) => println!("When is sad = {}", msg),
         Mood::Happy(msg) => println!("When is happy = {}", msg),
         Mood::Angry(msg) => println!("When is angry = {}", msg),
-        Mood::Borred => println!("😑"),
+        Mood::Bored => println!("😑"),
         Mood::Nothing => println!("∞"),
     }
 }
@@ -472,12 +476,39 @@ fn main() {
     _ => println!("no match"),
   }
 }
+```
+
+```rust
+#[derive(Debug)]
+enum Clock {
+    Sundial(u8),
+    Digital(u8, u8),
+    Analog(u8, u8, u8),
+}
+
+fn main() {
+    let mut res = what_clock(Clock::Sundial(10));
+    res = what_clock(Clock::Digital(10, 22));
+    res = what_clock(Clock::Analog(10, 02, 11));
+
+    println!("{:?}", res);
+}
+
+fn what_clock(clock: Clock) {
+    match clock {
+        Clock::Sundial(hours) => println!("It is about {} hours", hours),
+        Clock::Digital(hours, minutes) => println!("It is about {}:{}", hours, minutes),
+        Clock::Analog(hours, minutes, seconds) => {
+            println!("It is about {}:{}:{}", hours, minutes, seconds)
+        }
+    }
+}
 
 ```
 
-<hr/>
+---
 
-## Structs <a name ="structs"></a>
+## [Structs](#structs)
 
 With `Structs` we can structure our `rust` programs in a more logical and proper way.
 Structs are used to encapsulate related properties into one unified data type.
@@ -625,7 +656,48 @@ fn main() {
 
 ```
 
-## Associated functions <a name="associated-fns"></a>
+```rust
+#[derive(Debug)]
+enum FootBallPosition {
+    Goalie,
+    Defender,
+    Midfielder,
+    Attacker,
+}
+
+#[derive(Debug)]
+struct FootBallPlayer {
+    name: String,
+    number: u8,
+    position: FootBallPosition,
+}
+
+fn main() {
+    let buffon = FootBallPlayer {
+        name: String::from("Buffon"),
+        number: 1,
+        position: FootBallPosition::Goalie,
+    };
+
+    let ronaldo = FootBallPlayer {
+        name: String::from("Ronaldo"),
+        number: 7,
+        position: FootBallPosition::Midfielder,
+    };
+
+    let football_players: Vec<FootBallPlayer> = vec![buffon, ronaldo];
+
+    for player in football_players {
+        println!(
+            "players name {}, plays with number {} and is an {:?}",
+            player.name, player.number, player.position
+        );
+    }
+}
+
+```
+
+## [Associated functions](#associated-fns)
 
 some languages support static methods, we call a method directly on a class without createing a instance of the class, a new object.
 In Rust, we call them `Associated Functions`. we use :: instead of . when calling them from the struct.
@@ -647,9 +719,76 @@ impl Dog {
 
 ```
 
-## Methods <a name ="methods"></a>
+## [Methods](#methods)
 
-## Borrowing <a name ="borrowing"></a>
+**Why Methods?**
+We could simply make function that are not bind to out structs and it would work. However To make the code more organized and easier for you teammate to read and understand what's going on, we only want for example football player to be able to score
+the goal. It would not make any sense for a `maskot` or a `car` to score a goal right?
+
+```rust
+#[derive(Debug)]
+enum FootBallPosition {
+    Goalie,
+    Defender,
+    Midfielder,
+    Attacker,
+}
+
+#[derive(Debug)]
+struct FootBallPlayer {
+    name: String,
+    number: u8,
+    position: FootBallPosition,
+}
+
+impl FootBallPlayer {
+    fn score(&self, time_left_remain: u16) {
+        if time_left_remain < 5 {
+            println!("miss")
+        } else {
+            match self.position {
+                FootBallPosition::Midfielder => println!(
+                    "{} scored and only {:?} can score",
+                    self.name, self.position
+                ),
+                _ => println!("miss"),
+            }
+        }
+    }
+}
+
+#[derive(Debug)]
+struct Triangle(u32, u32, u32);
+
+fn main() {
+    let buffon = FootBallPlayer {
+        name: String::from("Buffon"),
+        number: 1,
+        position: FootBallPosition::Goalie,
+    };
+
+    let ronaldo = FootBallPlayer {
+        name: String::from("Ronaldo"),
+        number: 7,
+        position: FootBallPosition::Midfielder,
+    };
+
+    let football_players = vec![&buffon, &ronaldo];
+
+    for player in football_players {
+        println!(
+            "players name {}, plays with number {} and is an {:?}",
+            player.name, player.number, player.position
+        );
+    }
+
+    let check_has_scored = &ronaldo.score(50);
+    let check_has_scored2 = &buffon.score(50);
+}
+
+```
+
+## [Borrowing](#borrowing)
 
 Borrowing in `Rust` helps us to barrow a the data for a short amount of time, for exempla when passing a user struct into a greet method like this.
 
@@ -1018,7 +1157,7 @@ There is a method on Result and Option called `expect` that has similar behavior
 
 ```
 
-<hr/>
+---
 
 ## Functional programming <a name ="functional programming"></a>
 
@@ -1050,9 +1189,7 @@ fn transform(xs: &Vec<i32>, func: fn(x: &i32) -> i32) -> Vec<i32> {
 
 ```
 
-<hr/>
-
-## Playground <a name ="playground"></a>
+#### [Playground](#playground)
 
 A simple filter even numbers example not using built in filter function.
 
@@ -1074,5 +1211,17 @@ fn evens(xs: &Vec<i32>) -> Vec<i32> {
     }
     newXs
 }
+```
 
+#### Higher order functions in `Rust`
+
+```rust
+fn main() {
+    let cars: Vec<String> = vec!["audi", "mercedes", "bmw", "volvo", "ferrari"]
+        .iter()
+        .map(|x| x.to_uppercase())
+        .collect();
+
+    println!("{:?}", cars);
+}
 ```

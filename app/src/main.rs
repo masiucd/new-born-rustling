@@ -14,6 +14,14 @@ struct FootBallPlayer {
 }
 
 impl FootBallPlayer {
+    fn new(name: String, number: u8, position: FootBallPosition) -> FootBallPlayer {
+        FootBallPlayer {
+            name,
+            number,
+            position,
+        }
+    }
+
     fn score(&self, time_left_remain: u16) {
         if time_left_remain < 5 {
             println!("miss")
@@ -44,6 +52,8 @@ fn main() {
         number: 7,
         position: FootBallPosition::Midfielder,
     };
+
+    let zlatan = FootBallPlayer::new(String::from("Zlatan"), 11, FootBallPosition::Attacker);
 
     let football_players = vec![&buffon, &ronaldo];
 

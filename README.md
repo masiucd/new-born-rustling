@@ -13,8 +13,8 @@
     - [guising game](#guising-game)
   - [Enums](#enums)
   - [Structs](#structs)
-  - [Associated functions](#associated-functions)
   - [Methods](#methods)
+  - [Associated functions](#associated-functions)
   - [Borrowing](#borrowing)
   - [Ownership <a name ="ownership"></a>](#ownership-)
   - [Borrowing Patterns <a name = "#borrowing-patterns"> </a>](#borrowing-patterns--)
@@ -697,28 +697,6 @@ fn main() {
 
 ```
 
-## [Associated functions](#associated-fns)
-
-some languages support static methods, we call a method directly on a class without createing a instance of the class, a new object.
-In Rust, we call them `Associated Functions`. we use :: instead of . when calling them from the struct.
-ex.
-
-```rust
-struct Dog {
-  name: String,
-  age: i32,
-}
-
-impl Dog {
-  fn new(name: String,age: i32) -> Dog {
-    Dog{ name,age}
-  }
-}
-
- Dog::new("snickers", 32);
-
-```
-
 ## [Methods](#methods)
 
 **Why Methods?**
@@ -786,6 +764,45 @@ fn main() {
     let check_has_scored2 = &buffon.score(50);
 }
 
+```
+
+## [Associated functions](#associated-fns)
+
+`Associated functions` are defined within an impl block on a struct or an enum, the same as methods. They're still are just related to our type, so we want to organize that behavior so that it's associated with the type. Unlike methods, they don't take self as a parameter. Associated functions are commonly used to create instances of types, so they don't have a self instance to operate on.
+Lets say we want to create a new instance of our struct, so we create a new function that will create in this case our new dog.
+
+similar like we do when we create a new instance of a class in languages like `Java`.
+
+```java
+  SomeClass someClass = new SomeClass();
+```
+
+```rust
+struct Dog {
+  name: String,
+  age: i32,
+}
+
+impl Dog {
+  fn new(name: String,age: i32) -> Dog {
+    Dog{ name,age}
+  }
+}
+
+ Dog::new("snickers", 32);
+
+```
+
+```rust
+impl FootBallPlayer {
+    fn new(name: String, number: u8, position: FootBallPosition) -> FootBallPlayer {
+        FootBallPlayer {
+            name,
+            number,
+            position,
+        }
+    }
+}
 ```
 
 ## [Borrowing](#borrowing)

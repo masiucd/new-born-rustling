@@ -15,16 +15,16 @@
   - [Structs](#structs)
   - [Methods](#methods)
   - [Associated functions](#associated-functions)
-  - [Borrowing](#borrowing)
-  - [Ownership <a name ="ownership"></a>](#ownership-)
-  - [Borrowing Patterns <a name = "#borrowing-patterns"> </a>](#borrowing-patterns--)
-  - [Slices <a name ="slices"></a>](#slices-)
-  - [Self <a href = "self"></a>](#self-)
-  - [Result and Options <a name="rao"></a>](#result-and-options-)
-  - [Generics <a name ="generics"></a>](#generics-)
-  - [Functional programming <a name ="functional programming"></a>](#functional-programming-)
-      - [Playground](#playground)
-      - [Higher order functions in `Rust`](#higher-order-functions-in-rust)
+  - [Handle memory](#handle-memory)
+  - [Ownership](#ownership)
+  - [Borrowing Patterns](#borrowing-patterns)
+  - [Slices](#slices)
+  - [Self](#self)
+  - [Result and Options](#result-and-options)
+  - [Generics](#generics)
+  - [Functional programming](#functional-programming-)
+    - [Playground](#playground)
+    - [Higher order functions in `Rust`](#higher-order-functions-in-rust)
 
 ## [About](#about)
 
@@ -805,7 +805,46 @@ impl FootBallPlayer {
 }
 ```
 
-## [Borrowing](#borrowing)
+## [Handle memory](#handle-memory)
+
+Every programing language has its way to store and handle data.
+there are some questions we sometimes need to ask, like what happens when the program is done with it?
+
+Let's build a mental model on how the locations are representing in our world as developers.
+
+We can think of the different locations of data management of a kitchen when we try to cook some dish.
+
+Working from the largest and slowest to the smallest and fastest, we have the cloud, or data available over a network.
+
+This is effectively an infinite amount of space, but it's relatively slow to get data stored there.
+This is a good mental model for our grocery store. There's way more space there than in your kitchen, but we have to plan
+and travel to get ingredients from there.
+
+Next, there's local disk space.
+This is often in the hundreds of gigabytes range these days.
+It's not infinite like our the cloud,
+but still a lot of room.
+Data on disk is quicker to access than the
+cloud, but it still takes some time.
+
+Disk space is like our kitchen cabinets,
+refrigerator, and freezer.
+We can store a decent amount of ingredients there,
+but sometimes it takes time to find what you need.
+
+Next, we got the RAM.
+Our machine working memory. Accessing data in RAM is relatively fast.
+When a program is running and actively working on some data, that data is stored in RAM.
+
+This is like our kitchen counter, where we actively working on preparing the dish.
+Managing this space is much more important because we don't have an infinite amount of space.
+We need a strategy for cleaning up as you go to still be productive and fast, ('hey the customers are waiting right?').
+Otherwise, you'll run out of space and not be able
+to do work as efficiently
+or maybe not do any more work at all.
+
+`Rust` deals with memory management using the
+concepts of ownership and borrowing.
 
 Borrowing in `Rust` helps us to barrow a the data for a short amount of time, for exempla when passing a user struct into a greet method like this.
 

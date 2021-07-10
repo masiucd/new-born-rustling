@@ -17,6 +17,7 @@
   - [Associated functions](#associated-functions)
   - [Handle memory](#handle-memory)
   - [Ownership](#ownership)
+  - [Closures](#closures)
   - [Borrowing Patterns](#borrowing-patterns)
   - [Slices](#slices)
   - [Self](#self)
@@ -911,7 +912,7 @@ fn main() {
     );
 ```
 
-## Ownership <a name ="ownership"></a>
+## [Ownership](#ownership)
 
 Rust does not have any garbage collector like languages like `javascript`, `java` ore `golang`. To really understand `rust` we will go through how clearing up memory works in `rust` and how ownership works.
 Ownership in `rust` is a strategy for the rust compiler to managing data in memory and preventing common problems.
@@ -938,6 +939,25 @@ fn main() {
     println!("{}", a);
 }
 
+```
+
+```rust
+fn main() {
+    let s = String::from("book");
+    let pl = pluralize(s.clone());
+    let pl2 = pluralize2(&s);
+
+    println!("I have one {}, you have two {}", s, pl2)
+}
+
+fn pluralize(singular: String) -> String {
+    singular + "s"
+}
+fn pluralize2(singular: &String) -> String {
+    let mut x = singular.to_owned();
+    x.push_str("s");
+    x
+}
 ```
 
 **Why do we borrowing?**
@@ -1068,7 +1088,34 @@ for example
   freqs.entry('l') // { key: 'l', value: 1 })
 ```
 
-## Slices <a name ="slices"></a>
+## [Closures](#closures)
+
+```rust
+fn count_with_closures() {
+    let mut count = 0;
+
+    let mut increment = || {
+        count += 1;
+        println!("count ={}", count);
+    };
+
+    increment();
+    increment();
+    increment();
+    increment();
+    increment();
+    increment();
+}
+
+fn main() {
+    count_with_closures();
+}
+
+```
+
+---
+
+## [Slices](#slices)
 
 Slices is a datatype in `Rust` that has to do with borrowing different values.
 **So what is a slice?**

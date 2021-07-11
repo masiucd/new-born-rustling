@@ -1122,6 +1122,9 @@ Slices is a datatype in `Rust` that has to do with borrowing different values.
 A slice is a data type that always borrow data owned by some other data structure, like for example a `String`, or `u8`.
 A slice contains a pointer and a length, The pointer is a reference to the start of the data that the slice contains, and the length is the amount of elements after the start that the slice contains.
 
+![slices](./slices.png)
+This lice contains 2 `l's` from the hello string.
+
 How to store a slice in `Rust`.
 We create a slice using an ampersand, the variable we're using/referencing, and square brackets containing a range.
 
@@ -1152,7 +1155,67 @@ rust will panic if we try to create a slice which is greater then the length of 
   let xsSlice = &xs[0..99]; // Panic ! Not alllowed
 ```
 
-## Self <a href = "self"></a>
+Here is a example why it could be a good idea to accept a slice as parameter.
+the `reference_to_either_array_or_vector` function will accept both array slices and vector slices.
+
+```rust
+fn main() {
+    let array: [i32; 3] = [1, 2, 3];
+    let vector = vec![1, 2, 3];
+
+    only_reference_to_array(&array);
+    only_reference_to_vector(&vector);
+    reference_to_either_array_or_vector(&array);
+    reference_to_either_array_or_vector(&vector);
+    reference_to_either_array_or_vector(&array[1..]);
+    reference_to_either_array_or_vector(&vector[..2]);
+}
+
+fn only_reference_to_array(xs: &[i32; 3]) {
+    println!("this is a array {:?}", xs);
+}
+fn only_reference_to_vector(xs: &Vec<i32>) {
+    println!("this is a vector {:?}", xs);
+}
+fn reference_to_either_array_or_vector(xs: &[i32]) {
+    println!("this is a alice {:?}", xs);
+}
+
+```
+
+Another example of using slices and vectors in `rust`.
+
+```rust
+fn print_items(xs: &[i32]) {
+    for x in xs {
+        println!("x is {}", x);
+    }
+}
+
+fn give_me_vec_slice<'a>(xs: &'a [&str], from: usize, to: usize) -> Vec<&'a str> {
+    let parts = &xs[from..to];
+    parts.to_vec()
+}
+
+fn main() {
+    let list: Vec<i32> = (0..20).collect();
+    println!("{:?}", list);
+
+    let doubled: Vec<i32> = list.iter().map(|x| x * 2).collect();
+    print_items(&doubled);
+
+    let words: Vec<&str> = vec!["the", "quick", "brown", "fox", "jumped"];
+
+    let new_words = give_me_vec_slice(&words, 1, 4);
+
+    println!("{:?}", new_words)
+}
+
+```
+
+---
+
+## [Self](#self)
 
 When using the `self` keyword `Rust` creates the reference automatically, and it know when we want to make a mutable reference as well.
 For example, a user struct where we implement a `birthday` method, this is a good use case when we want to mute the users age.
